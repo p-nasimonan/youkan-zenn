@@ -8,7 +8,7 @@ topics:
   - "minio"
   - "自宅サーバ"
   - "gitops"
-published: false
+published: true
 ---
 
 # はじめに
