@@ -58,7 +58,7 @@ Misskey 自体基本は3つの Deployment で構成されている
 - Misskey (本体)
 - Postgres (DB)
 - Redis (Cache)
-それに加えてノートの検索を行うためにmeilisearchをデプロイしてます。
+それに加えてノートの検索を行うためにMeilisearchをデプロイしてます。
 
 Misskeyにはvolumeをマウントしてデータを永続化する必要があります。例えばサーバーの名前などの設定や投稿データはpostgresで管理されますが、そのデータをどこかに保存しないといけないのです。
 今回はNASに保存することにしました。KubernetesにはPVとPVCがありますがnfs-subdir-external-provisionerを使っているためそれぞれを書く必要はなくなりました。動的にディレクトリを作ってくれます。ローカルストレージでもLonghornを作ってみてもよかったのですが、VMを壊しにくくなってしまうのでnfsにしました。
@@ -227,7 +227,10 @@ Pull Policy: `Pull the image if it is not already present on the host.`
 `[server, /data, --console-address, :9001]`念の為それぞれ分けて書いた
 
 **Environment Variables**
-MINIO_ROOT_USERとMINIO_ROOT_PASSWORDを設定する。これがrootユーザーの認証情報になる
+
+:::message alert
+MINIO_ROOT_USERとMINIO_ROOT_PASSWORDを設定する。これがrootユーザーの認証情報になるため、注意して設定してください
+:::
 
 **Ports**
 9000と9001の二つを追加した。9000が公開するBucketのポートで、9001が管理画面
@@ -459,8 +462,13 @@ spec:
 ここで参考にした記事では`/misskey/.config/default.yaml`を設定するために`ExternalSecrets`を使ってそれをマウントしていましたが、ここでは`SealedSecret`を使うために少し工夫が必要です。
 initContainersを使い、毎回コンテナ起動時に設定ファイルを書き換えています。設定の可読性が下がるので別の方法を考えたいところですが、`SealedSecret`を使うため環境変数で書き換えられるこの方法が確実なためこうしています。
 
+:::message
 設定は公式リポジトリの`example.yml`を参考にしました。S3は後で管理画面から有効にします。つまり初期だと画像が永続化されません!管理画面から有効にする必要があります。
-それと**最初にアカウントを作った人が管理者**になります。`cloudflare-tunnel-ingress-controller`は欠点としてローカルで確認する前に公開してしまいます。そのため何かしら初期ではアクセス制御する必要があります。そのため念のため`setupPassword`を設定しています。
+:::
+
+:::message
+**最初にアカウントを作った人が管理者**になります。`cloudflare-tunnel-ingress-controller`は欠点としてローカルで確認する前に公開してしまいます。そのため何かしら初期ではアクセス制御する必要があります。そのため念のため`setupPassword`を設定しています。
+:::
 
 https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml
 
