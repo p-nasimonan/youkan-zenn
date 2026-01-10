@@ -1,0 +1,36 @@
+{
+  "name": "youkan-zenn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npm run lint:md",
+    "lint:md": "markdownlint \"**/*.md\" --config .markdownlintrc.json --ignore node_modules",
+    "lint:text": "textlint \"articles/**/*.md\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-nasimonan/youkan-zenn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/p-nasimonan/youkan-zenn/issues"
+  },
+  "homepage": "https://github.com/p-nasimonan/youkan-zenn#readme",
+  "dependencies": {
+    "textlint-rule-ja-no-weak-phrase": "^2.0.0",
+    "zenn-cli": "^0.3.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "markdownlint-cli": "^0.47.0",
+    "textlint": "^15.5.0",
+    "textlint-rule-ja-no-mixed-period": "^3.0.2",
+    "textlint-rule-ja-space-between-half-and-full-width": "^2.4.2"
+  }
+}
