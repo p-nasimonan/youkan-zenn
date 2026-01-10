@@ -433,7 +433,7 @@ spec:
 ```
 
 ### Meilisearch
-これがなくてもMisskey自体は動くが、これがないとノート検索ができないため
+これがなくてもMisskey自体は動くが、高速にノート検索を行うために導入してみた。ノート検索はロール設定で有効にする必要がある(重要)
 
 ```yml:misskey-meilisearch.yaml
 apiVersion: argoproj.io/v1alpha1
@@ -462,6 +462,80 @@ spec:
 ```
 
 ## カスタムマニフェスト
+### Meilisearch
+日本語検索がこれで楽になるらしい？
+```yml:meilisearch.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meilisearch-data
+  namespace: misskey
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meilisearch
+  namespace: misskey
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meilisearch
+  template:
+    metadata:
+      labels:
+        app: meilisearch
+    spec:
+      containers:
+        - name: meilisearch
+          image: getmeili/meilisearch:prototype-japanese-13
+          env:
+            - name: MEILI_ENV
+              value: "production"
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: misskey-secrets
+                  key: MEILISEARCH_MASTER_KEY
+          ports:
+            - name: http
+              containerPort: 7700
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: data
+              mountPath: /meili_data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: meilisearch-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meilisearch
+  namespace: misskey
+spec:
+  selector:
+    app: meilisearch
+  ports:
+    - name: http
+      port: 7700
+      targetPort: http
+  type: ClusterIP
+```
+
 ### Misskey Server
 イメージは`misskey/misskey`を使いました。今後変えてみても面白そうですね!
 
