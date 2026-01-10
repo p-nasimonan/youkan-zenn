@@ -3,7 +3,7 @@ title: "おうちKubernetes × GitOpsでMisskeyを構築、TrueNASでおうちS3
 emoji: "🏠"
 type: "tech"
 topics:
-  - "kubernetes"
+  - "Kubernetes"
   - "argocd"
   - "minio"
   - "自宅サーバ"
@@ -19,7 +19,7 @@ https://mi.youkan.uk/
 自分のMisskeyを建てたい！って思ったことありませんか？
 でもせっかくだからKubernetesの勉強したいな〜
 画像の保存もどうしよう...でもクラウドお金かかるし...そうだ！家のk3sクラスタにMisskey建てて、それからS3互換のオブジェクトストレージも家のNASで作っちゃおう。
-冬休み少し時間があったのでkubernetesを勉強するためにMisskeyを建ててみた感じです！
+冬休み少し時間があったのでKubernetesを勉強するためにMisskeyを建ててみた感じです！
 
 もちろんそのまま参考にはあまりならないとは思いますが、Kubernetesをがっつり触ったのはこれが初めてなのですが、その割には楽でいい感じの構成になったと思います。構成例として見て頂ければいいなと思います。もっとよくなりそうな書き方や構成があれば言ってくれると助かります。
 
@@ -36,7 +36,7 @@ https://mi.youkan.uk/
 
 ### 前提条件
 
-- kubernetesクラスターを構築済み
+- Kubernetesクラスターを構築済み
 - Argocdが入ってる
 - TrueNASがある(minioを入れればいいから別になんでもいい)
 - cloudflareにドメインを登録している(cloudflare tunnel使いたいので)
@@ -52,6 +52,7 @@ https://github.com/p-nasimonan/home-manifests
 ## 構成図
 
 ![Kubernetes + Misskey + MinIO構成図](https://storage.googleapis.com/zenn-user-upload/9b495cf2c1ec-20260109.png)
+*Kubernetes + Misskey + MinIO構成図*
 
 Misskey 自体基本は3つの Deployment で構成されている
 
@@ -144,7 +145,7 @@ kubectl create secret generic "$SECRET_NAME" \
 ## ボリューム・ネットワーク周り
 
 ### cloudflare-tunnel-ingress-controller
-元々家のルーターでポート解放するのめんどくさいしセキュアではないと感じてcloudflaretunnelを使っていたが、なんとkubernetesでingressとして設定してあげるだけで超手軽に外部に公開できるらしい！コンソールを開かなくても自動で設定される!
+元々家のルーターでポート解放するのめんどくさいしセキュアではないと感じてcloudflaretunnelを使っていたが、なんとKubernetesでingressとして設定してあげるだけで超手軽に外部に公開できるらしい！コンソールを開かなくても自動で設定される!
 
 **参考にした記事**
 
@@ -206,9 +207,11 @@ APIについては以下の権限を持たせる必要があります
 ## TrueNASでNFS / MinIO
 TrueNASでデータセットを作成する。今回は`k3s`がnfsで共有され、`s3`をminioにマウントする形にする
 ![TrueNASデータセット構成](https://storage.googleapis.com/zenn-user-upload/754a1654880a-20260109.png)
+*TrueNASデータセット構成*
 ### NFS
 ShereでNFSを有効にして、マウントしたいpathを選択して、ネットワーク制限をつけて作る
 ![NFS設定](https://storage.googleapis.com/zenn-user-upload/ab33bc7b2c29-20260109.png)
+*NFS共有設定画面*
 ### MinIO
 ``RELEASE.2025-04-22T22-12-26Z`より後のイメージはGUIがほとんどなくなっているため、少し古いが`RELEASE.2025-04-22T22-12-26Z`のバージョンを使う。Dockerイメージが配布されなくなったらしいので今後代替を調べたいがなかなか見つからないところ...
 #### 1. TrueNASのApps -> Discover Apps -> customAppへ移動する
@@ -218,18 +221,20 @@ Discover内で検索してすぐにインストールできるが、それだと
 
 **Image Configuration**
 ![MinIOイメージ設定](https://storage.googleapis.com/zenn-user-upload/f1e817048168-20260109.png)
+*MinIOコンテナイメージ設定*
 Repository: `quay.io/minio/minio`
 Tag: `RELEASE.2025-04-22T22-12-26Z`
 Pull Policy: `Pull the image if it is not already present on the host.`
 
 **command**
 ![MinIOコマンド設定](https://storage.googleapis.com/zenn-user-upload/14122a3742d7-20260109.png)
+*MinIOサーバー起動コマンド設定*
 `[server, /data, --console-address, :9001]`念の為それぞれ分けて書いた
 
 **Environment Variables**
 
 :::message alert
-MINIO_ROOT_USERとMINIO_ROOT_PASSWORDを設定する。これがrootユーザーの認証情報になるため、注意して設定してください
+MINIO_ROOT_USER と MINIO_ROOT_PASSWORD を設定する。これがrootユーザーの認証情報になるため、必ず強力なパスワードを設定してください
 :::
 
 **Ports**
@@ -240,6 +245,7 @@ Host Pathを選択する。
 
 #### 3. MinIOでバケットとアクセスキーを作成する
 ![MinIOバケット作成画面](https://storage.googleapis.com/zenn-user-upload/6b0ecf20f418-20260109.png)
+*MinIOバケット作成画面*
 特に特別なことはせず、デフォルトのままバケットを作ってアクセスキーを作る。
 そしてアクセスキーのポリシーを設定する。作ったバケットにアクセスは限定しよう。
 
@@ -638,6 +644,7 @@ MinIOの場合以下を設定する必要があるみたい
 
 Endpointは実際にmisskey-serverがMinIOと通信するときに使うものでhttpsとなっているがあまり気にしなくてよいSSLを使用するをオフにしたら実際はhttpで通信されてるはず、Proxyは利用しないのでオフ。これによって外部から画像を見たいときはMinIOを見ることができて無駄がない。
 ![Misskeyオブジェクトストレージ設定](https://storage.googleapis.com/zenn-user-upload/5fab2a0b894a-20260111.png)
+*Misskeyオブジェクトストレージ設定画面*
 
 
 ## まとめ
