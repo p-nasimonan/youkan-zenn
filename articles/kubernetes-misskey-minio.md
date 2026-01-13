@@ -54,7 +54,7 @@ https://github.com/p-nasimonan/home-manifests
 ![Kubernetes + Misskey + MinIO構成図](https://storage.googleapis.com/zenn-user-upload/9b495cf2c1ec-20260109.png)
 *Kubernetes + Misskey + MinIO構成図*
 
-Misskey 自体基本は3つの Deployment で構成されている
+Misskey自体基本は3つのDeploymentで構成されている
 
 - Misskey (本体)
 - Postgres (DB)
@@ -124,9 +124,11 @@ New Appからも登録できますがCLIのほうが楽なのでkubectlででき
 kubectl apply -f https://raw.githubusercontent.com/p-nasimonan/home-manifests/main/argocd-apps/sealed-secrets.yaml
 ```
 
+なんかわからないって人はgit pullしてそのままapplyしちゃって大丈夫
+
 #### 使い方
 
-1. kubeseal をインストール
+1. kubesealをインストール
 2. .envを作成し、シークレットを書く(.envはgitignoreで除く)
 3. サーバーから公開鍵を取得
 `~/.kube/config`が設定されている状態で`kubeseal --fetch-cert > cert.pem`で取得する
@@ -164,11 +166,10 @@ metadata:
 spec:
   project: default
   sources:
-    # Secret ファイルの管理
+    # Sealed Secret と Helm chart の管理
     - repoURL: https://github.com/p-nasimonan/home-manifests.git
       targetRevision: main
-      path: argocd-apps/secrets
-    # Helm chart の管理
+      path: apps/cloudflare
     - repoURL: https://helm.strrl.dev
       chart: cloudflare-tunnel-ingress-controller
       targetRevision: 0.0.12
@@ -464,6 +465,7 @@ spec:
 ## カスタムマニフェスト
 ### Meilisearch
 日本語検索がこれで楽になるらしい？
+
 ```yml:meilisearch.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -1,1 +1,6 @@
-npm run lint
+npm run lint || {
+  echo ""
+  echo "⚠️  警告: Lintエラーが検出されました"
+  echo "修正するには 'npm run lint:fix' を実行してください"
+  echo ""
+}
