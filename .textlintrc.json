@@ -1,8 +1,5 @@
 {
   "rules": {
-    "ja-no-mixed-period": {
-      "periodMark": "。"
-    },
     "ja-space-between-half-and-full-width": true,
     "ja-no-weak-phrase": true
   }
