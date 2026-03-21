@@ -7,12 +7,13 @@ Zenn で技術ブログ記事を執筆・管理するリポジトリです。
 ### 前提条件
 
 - Node.js 14以上がインストール済み
+- pnpmがインストール済み（`npm install -g pnpm`）
 
 ### インストール
 
 ```bash
 # 依存パッケージをインストール
-npm install
+pnpm install
 ```
 
 ## 使い方
@@ -65,13 +66,7 @@ npx zenn new:book --slug my-book
 
 ```bash
 # プレビューサーバーを起動（http://localhost:8000）
-npx zenn preview
-
-# ポート番号を指定
-npx zenn preview --port 3000
-
-# ファイル監視を無効化
-npx zenn preview --no-watch
+pnpm dev
 ```
 
 ブラウザでリアルタイムにプレビューしながら執筆できます。
@@ -177,7 +172,7 @@ Markdown記法の統一性をチェックします。
 
 ```bash
 # Markdownファイル全体をチェック
-npm run lint:md
+pnpm lint:md
 ```
 
 ### textlint
@@ -186,7 +181,7 @@ npm run lint:md
 
 ```bash
 # 記事をチェック
-npm run lint:text
+pnpm lint:text
 ```
 
 ### pre-commit フック

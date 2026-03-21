@@ -11,6 +11,7 @@
     "lint:text:fix": "textlint \"articles/**/*.md\" --fix",
     "lint:fix": "npm run lint:md:fix && npm run lint:text:fix",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "zenn preview",
     "prepare": "husky"
   },
   "repository": {
@@ -27,7 +28,7 @@
   "homepage": "https://github.com/p-nasimonan/youkan-zenn#readme",
   "dependencies": {
     "textlint-rule-ja-no-weak-phrase": "^2.0.0",
-    "zenn-cli": "^0.3.0"
+    "zenn-cli": "^0.4.6"
   },
   "devDependencies": {
     "husky": "^9.1.7",
