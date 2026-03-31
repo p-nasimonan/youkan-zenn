@@ -8,7 +8,7 @@ topics:
   - "zfs"
   - "自宅サーバ"
   - "misskey"
-published: false
+published: true
 ---
 
 # はじめに
