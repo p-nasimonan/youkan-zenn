@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "new": "zenn new:article",
+    "new:article": "zenn new:article",
+    "new:book": "zenn new:book",
     "lint": "npm run lint:md && npm run lint:text",
     "lint:md": "markdownlint \"**/*.md\" --config .markdownlintrc.json --ignore node_modules",
     "lint:md:fix": "markdownlint \"**/*.md\" --config .markdownlintrc.json --ignore node_modules --fix",

@@ -21,14 +21,14 @@ pnpm install
 ### 記事の作成
 
 ```bash
-# 基本的な作成
-npx zenn new:article
+# 基本的な作成（対話形式）
+pnpm new
 
 # slug（ファイル名）を指定して作成
-npx zenn new:article --slug my-article-slug
+pnpm new -- --slug my-article-slug
 
 # Front Matterもオプションで指定
-npx zenn new:article --slug my-article --title "記事のタイトル" --type tech --emoji 📚
+pnpm new -- --slug my-article --title "記事のタイトル" --type tech --emoji 📚
 ```
 
 作成されるファイル構成：
@@ -59,7 +59,7 @@ published: true                 # 公開設定
 ### 本の作成
 
 ```bash
-npx zenn new:book --slug my-book
+pnpm new:book -- --slug my-book
 ```
 
 ### ローカルでプレビュー
