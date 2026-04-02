@@ -3,7 +3,7 @@ title: "【k8s入門】ノートPC一つでできるKubernetesのオンボーデ
 emoji: "☸️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["kubernetes", "入門", "k8s", "ハンズオン"]
-published: false
+published: true
 ---
 # 1. 概要
 「Kubernetes（k8s）って難しそう……」
