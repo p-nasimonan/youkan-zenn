@@ -188,7 +188,7 @@ kubectl apply -f service.yaml
 :::message
 **観察ポイント: どうやってServiceは裏のPodを見つけるのか？**
 Serviceの `spec.selector.app: nginx` と、Deploymentで作ったPodの `spec.template.metadata.labels.app: nginx`。
-この**「同じラベル（名札）を持っていること」**が両者を紐付ける条件です。もし裏のPodが死んで生まれ変わっても、新しいPodが同じラベルさえ付けていれば、Serviceは迷わず新しい方へ自動で通信を振り分けてくれます。
+この**同じラベル（名札）を持っていること**が両者を紐付ける条件です。もし裏のPodが死んで生まれ変わっても、新しいPodが同じラベルさえ付けていれば、Serviceは迷わず新しい方へ自動で通信を振り分けてくれます。
 :::
 
 
